@@ -14,7 +14,7 @@ TextField{
         //anchors.left: parent.left; anchors.leftMargin: 2
         horizontalAlignment:Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: 20
+        font.pixelSize: height/2.5
         font.family: "Helvetica"
         color: "#F99450"
         //anchors.horizontalCenter: parent.horizontalCenter

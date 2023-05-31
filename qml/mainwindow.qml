@@ -1,5 +1,7 @@
 import QtQuick
 import QtQuick.Controls
+import QtQml
+import ShutDownWin10 1.0
 
 ApplicationWindow{
     id: root
@@ -9,7 +11,9 @@ ApplicationWindow{
     visible: true
     width: 500
     height: 500
-    
+    property int counts: 1500
+    property int new_counts
+    signal setClicked(var timestring)
     //anchors.centerIn: parent
     
     //horizontalAlignment: root.AlignLeft
@@ -49,6 +53,10 @@ ApplicationWindow{
                 icon.name: "document-save"
                 onTriggered: saveImage()
             }
+        }
+        Win10ShutDown{
+            id: shutdownwin10
+
         }
         Menu{
             
@@ -90,16 +98,16 @@ ApplicationWindow{
                 }
             }
         Rectangle{
-            id:timeset
+            id: timeset
             width: 400; height: 60; color: "transparent"
             Flow{
                 anchors.fill: parent
                 anchors.margins: 4
                 spacing: 10
                 Rectangle{
-                    width:100;height: 50; color: "#1DB784"
+                    width:150;height: 50; color: "#1DB784"
                     Text{
-                        text: "TimeAfter"
+                        text: "Time After"
                         color: "#F99450"
                         font.pixelSize: 20
                         anchors.centerIn: parent
@@ -107,13 +115,17 @@ ApplicationWindow{
                 
                 }
                 TimeEdit{
+                    id: timeEdit
+                    text : "01:00:00"
 
                 }
                 MyButton{
                     id: set_btn
                     text: "Set"
                     tip_text: qsTr("Set Time and Start countdown")
-                    onClicked: startCount()
+                    onClicked: {//setClicked(timeEdit.text);
+                    counts=shutdownwin10.getTimeSet(timeEdit.text)+10
+                    countTimer.start()}
                 }
             }
         }
@@ -129,19 +141,21 @@ ApplicationWindow{
         Row{
             spacing:10
             Rectangle{
-                width:210;height: 50; color: "#F99450"
+                id: seconds_left
+                width:260;height: 50; color: "#F99450"
                 Text{
-                    text: ""
-                    color: "#1DB784"
-                    font.pixelSize: 20
+                    text: counts.toString()
+                    color: "white"
+                    font.pixelSize: 40
                     anchors.centerIn: parent
                 }
             }
             MyButton{
                 id: stopBtn
                 text: "STOP"
+                height: 50
                 tip_text: qsTr("Stop countdown")
-                onClicked: stopCount()
+                onClicked: {countTimer.stop()}
             }
         }
     }
@@ -150,11 +164,19 @@ ApplicationWindow{
         property var locale: Qt.locale()
         //property date currentTime: new Date()
         Timer {
-            
+            id: showTimer
             interval: 500; running: true; repeat: true
             onTriggered: currentTime.text = new Date().toLocaleString(locale,Locale.LongFormat)
         }
-}
+        Timer{
+            id: countTimer
+            interval: 1000; running: false; repeat: true
+            onTriggered: {
+            counts=counts-1
+            if(counts==0)
+                shutdownwin10.shutdown()
 
-
+            }
+        }
+    }
 }

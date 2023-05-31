@@ -14,7 +14,7 @@ Button{
             text: parent.text
             font: parent.font
             opacity: enabled ? 1.0 : 0.3
-            color:  parent.hovered ? "#F99450" : "white" 
+            color:  parent.hovered ? "#00994C" : "white" 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -27,7 +27,7 @@ Button{
                 color: parent.hovered ? "#F99450" : "#00994C"
                 opacity: enabled ? 1 : 0.3
                 border.color: parent.down ? "white" : "#F99450"
-                border.width: 1
+                border.width: 2
                 radius: 2
                 }
         hoverEnabled: true
