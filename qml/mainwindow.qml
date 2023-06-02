@@ -52,9 +52,9 @@ ApplicationWindow {
                     onTriggered: fileOpenDialog.open()
                 }
                 MenuItem {
-                    text: qsTr("&Save")
+                    text: qsTr("&Gif image")
                     icon.name: "document-save"
-                    onTriggered: saveImage()
+                    onTriggered: openGifDialog.open()
                 }
             }
             Menu {
@@ -81,6 +81,17 @@ ApplicationWindow {
         }
 
         StandardDialogs.FileDialog {
+            id: openGifDialog
+            title: "choose one Gif Image"
+            currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+            nameFilters: ["Gif animation files (*.Gif)"]
+            onAccepted: {
+                //rect_gif.gifsource=openGifDialog.selectedFile
+                animation.source=openGifDialog.selectedFile
+            }
+        }
+
+        StandardDialogs.FileDialog {
             id: fileOpenDialog
             title: "choose one Image"
             currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
@@ -88,7 +99,6 @@ ApplicationWindow {
             onAccepted: {
                 image.source=fileOpenDialog.selectedFile
             }
-
         }
 
         Dialog {
@@ -103,31 +113,22 @@ ApplicationWindow {
             }
         }
 
-
         Win10ShutDown {
             id: shutdownwin10
         }
+        
+        Row{
+        padding:5
+        spacing:1
+        
+        Rectangle{
+            id: rect0
+            width:400;height: 400
+            //opacity: 0.9
+            color: "transparent"
 
-        Rectangle {
-            property int frames
-            width: animation.width;height: animation.height;
-            AnimatedImage {
-                id: animation
-                source:"../img/look.gif"
-            }
 
-            Component.onCompleted: {
-                frames=animation.frameCount
-            }
-
-            Rectangle {
-                width:4;height:8
-                x: (animation.width-width)*animation.currentFrame/frames
-                y:animation.height
-                color:"red"
-            }
-        }
-        Column {
+            Column {
             spacing: 10
             padding: 5
             anchors.horizontalCenter: parent.horizontalCenter
@@ -156,7 +157,7 @@ ApplicationWindow {
                     anchors.centerIn: parent
                 }
             }
-            Rectangle 15{
+            Rectangle{
                 id: timeset
                 width: 400; height: 60; color: "transparent"
                 Flow {
@@ -218,6 +219,33 @@ ApplicationWindow {
                 }
             }
         }
+    }
+    Rectangle {
+            id: rect_gif
+            width: animation.width;height: animation.height+8;
+            property alias gifsource: animation.source
+
+            AnimatedImage {
+                id: animation
+                source:"../img/JessicaAlba.gif"
+            }
+
+            Component.onCompleted: {
+                 frames=animation.frameCount
+            }
+
+            Rectangle {
+                property int frames
+                width:4;height:8
+                x: (animation.width-width)*animation.currentFrame/frames
+                y:animation.height
+                color:"blue"
+            }
+        }
+
+    }
+        
+        
 
 
         Item {
