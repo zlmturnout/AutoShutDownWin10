@@ -33,5 +33,5 @@ class Win10ShutDown(QObject):
     def shutdown(self):
         print('shut down now')
         os.system('shutdown -s -f -t 1')
-        time.sleep(1000)
+        #time.sleep(1000)
         #self.close()

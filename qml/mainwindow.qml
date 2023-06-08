@@ -242,8 +242,17 @@ ApplicationWindow {
                 color:"blue"
             }
         }
-
+    MyCombox{
+        id:mycombox
     }
+    MyButton{
+        id: com_btn
+        onClicked:{
+            mycombox.model.append( {text:"Orange"})
+        }
+    }
+
+}
         
         
 
